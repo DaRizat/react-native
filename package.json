@@ -1,6 +1,6 @@
 {
   "name": "react-native",
-  "version": "1000.0.0",
+  "version": "0.29.1",
   "description": "A framework for building native apps using React",
   "license": "BSD-3-Clause",
   "repository": {
@@ -203,7 +203,7 @@
     "jest-repl": "^13.1.0",
     "jest-runtime": "^13.1.0",
     "portfinder": "0.4.0",
-    "react": "~15.3.0-rc.2",
+    "react": "~15.2.1",
     "shelljs": "0.6.0"
   }
 }
