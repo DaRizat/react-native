@@ -82,7 +82,7 @@ function _runIOS(argv, config, resolve, reject) {
   ];
   console.log(`Building using "xcodebuild ${xcodebuildArgs.join(' ')}"`);
 
-  let appPath = `build/Build/Products/Debug-iphonesimulator/${inferredSchemeName}.app`;
+  let appPath = `build/Build/Products/Debug-iphonesimulator/${scheme}.app`;
   const xcodeBuildProcess = child_process.spawn('xcodebuild', xcodebuildArgs, {
     stdio: [process.stdin, 'pipe', process.stderr]
   });
