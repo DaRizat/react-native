@@ -39,6 +39,11 @@ function _runIOS(argv, config, resolve, reject) {
       type: 'string',
       required: false,
     }, {
+      command: 'target',
+      description: 'Explicitly set Xcode target to use',
+      type: 'string',
+      required: false,
+    }, {
       command: 'project-path',
       description: 'Path relative to project root where the Xcode project (.xcodeproj) lives. The default is \'ios\'.',
       type: 'string',
@@ -56,6 +61,9 @@ function _runIOS(argv, config, resolve, reject) {
   const inferredSchemeName = path.basename(xcodeProject.name, path.extname(xcodeProject.name));
   const scheme = args.scheme || inferredSchemeName;
   console.log(`Found Xcode ${xcodeProject.isWorkspace ? 'workspace' : 'project'} ${xcodeProject.name}`);
+
+  const inferredTargetName = path.basename(xcodeProject.name, path.extname(xcodeProject.name));
+  const target = args.target || inferredTargetName;
 
   const simulators = parseIOSSimulatorsList(
     child_process.execFileSync('xcrun', ['simctl', 'list', 'devices'], {encoding: 'utf8'})
@@ -77,12 +85,13 @@ function _runIOS(argv, config, resolve, reject) {
   const xcodebuildArgs = [
     xcodeProject.isWorkspace ? '-workspace' : '-project', xcodeProject.name,
     '-scheme', scheme,
+    '-target', target,
     '-destination', `id=${selectedSimulator.udid}`,
     '-derivedDataPath', 'build',
   ];
   console.log(`Building using "xcodebuild ${xcodebuildArgs.join(' ')}"`);
 
-  let appPath = `build/Build/Products/Debug-iphonesimulator/${inferredSchemeName}.app`;
+  let appPath = `build/Build/Products/Debug-iphonesimulator/${target}.app`;
   const xcodeBuildProcess = child_process.spawn('xcodebuild', xcodebuildArgs, {
     stdio: [process.stdin, 'pipe', process.stderr]
   });
